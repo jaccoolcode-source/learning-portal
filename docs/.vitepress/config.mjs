@@ -131,7 +131,7 @@ export default defineConfig({
 
     footer: {
       message: 'Built with VitePress',
-      copyright: 'Java Learning Portal',
+      copyright: '© jaccoolcode-source',
     },
 
     editLink: {
