@@ -1,3 +1,6 @@
+# Source PDFs (keep local only)
+external-resources/
+
 # Dependencies
 node_modules/
 
