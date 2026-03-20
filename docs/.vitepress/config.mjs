@@ -80,6 +80,7 @@ export default defineConfig({
           { text: 'MCP Protocol', link: '/ai/mcp' },
           { text: 'Agent Frameworks', link: '/ai/agent-frameworks' },
           { text: 'Thinking Models', link: '/ai/thinking-models' },
+          { text: 'AI Workflows (n8n i inne)', link: '/ai/ai-workflows' },
         ],
       },
       {

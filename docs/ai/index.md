@@ -23,6 +23,7 @@ Modern software engineers increasingly need to understand and work with AI syste
 | [MCP Protocol](/ai/mcp) | M×N problem, host/client/server, Tools/Resources/Prompts, stdio/SSE, Spring AI MCP server |
 | [Agent Frameworks](/ai/agent-frameworks) | OpenAI Agents SDK, Agno, LangChain+LangGraph — porównanie, drzewo decyzyjne |
 | [Thinking Models](/ai/thinking-models) | Claude, o1–o4-mini, Gemini 2.5, DeepSeek-R1, Grok — modele z trybem reasoning |
+| [AI Workflows](/ai/ai-workflows) | n8n, Flowise, Dify, LangFlow, Make, Zapier — wizualna automatyzacja z AI |
 
 ---
 
@@ -40,6 +41,8 @@ Modern software engineers increasingly need to understand and work with AI syste
 | **Tool calling** | Structured mechanism for LLMs to invoke external functions |
 | **MCP** | Model Context Protocol — open standard for AI↔tool integration |
 | **Spring AI** | Spring module providing abstractions for LLM providers, embeddings, vector stores |
+| **AI Workflow** | Wizualny graf zadań łączący triggery, LLM, API i bazy danych — bez pisania kodu |
+| **n8n** | Open-source platforma automatyzacji z wbudowanymi węzłami AI (self-hostowalna) |
 | **Prompt injection** | Attack where untrusted input overrides intended instructions |
 | **Temperature** | Sampling randomness parameter (0 = deterministic, 2 = very random) |
 | **Hallucination** | Model generates plausible-sounding but factually incorrect content |
@@ -52,6 +55,8 @@ Modern software engineers increasingly need to understand and work with AI syste
 LLM Fundamentals  →  Prompt Engineering  →  RAG & Vector Search
                                                       ↓
                                               AI Agents  →  MCP Protocol
+                                                      ↓
+                                          AI Workflows (n8n / Dify / Flowise)
 ```
 
 For Spring AI projects, you'll typically use all five areas together:
