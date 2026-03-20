@@ -21,6 +21,8 @@ Modern software engineers increasingly need to understand and work with AI syste
 | [RAG & Vector Search](/ai/rag) | RAG pipeline, chunking, pgvector, Spring AI `PgVectorStore`, hybrid search, evaluation |
 | [AI Agents](/ai/agents) | ReAct loop, tool calling, Spring AI `@Tool`, memory types, multi-agent patterns |
 | [MCP Protocol](/ai/mcp) | M×N problem, host/client/server, Tools/Resources/Prompts, stdio/SSE, Spring AI MCP server |
+| [Agent Frameworks](/ai/agent-frameworks) | OpenAI Agents SDK, Agno, LangChain+LangGraph — porównanie, drzewo decyzyjne |
+| [Thinking Models](/ai/thinking-models) | Claude, o1–o4-mini, Gemini 2.5, DeepSeek-R1, Grok — modele z trybem reasoning |
 
 ---
 
