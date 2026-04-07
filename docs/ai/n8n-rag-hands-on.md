@@ -195,7 +195,7 @@ Note the webhook URL shown: `http://localhost:5678/webhook/rag-query`
 ### Node 2: Ollama Embeddings (embed the question)
 - Type: **Embeddings Ollama**
 - Model: `nomic-embed-text`
-- Input field: `{{ $json.body.question }}`
+- Input field: <code v-pre>{{ $json.body.question }}</code>
 
 ### Node 3: Postgres (vector similarity search)
 - Type: **Postgres**
@@ -243,7 +243,7 @@ Answer:`,
 - Use within a **Basic LLM Chain** root node:
   - Add a **Basic LLM Chain** node
   - Connect it to Node 4
-  - Set prompt field: `{{ $json.prompt }}`
+  - Set prompt field: <code v-pre>{{ $json.prompt }}</code>
   - Sub-node: attach the Ollama Chat Model node
 
 ### Node 6: Respond to Webhook

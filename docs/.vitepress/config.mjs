@@ -24,6 +24,7 @@ import { observabilitySidebar } from './sidebars/observability.js'
 export default defineConfig({
   title: 'Java Learning Portal',
   description: 'A comprehensive guide to Java, Spring, Design Patterns, and Software Architecture',
+  ignoreDeadLinks: [/localhost/],
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico' }],
     ['meta', { name: 'theme-color', content: '#3b82f6' }],

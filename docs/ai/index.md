@@ -29,7 +29,6 @@ This section covers the fundamentals of large language models, practical prompt 
 | [Claude API](/ai/claude-api) | Messages API, streaming, vision, tool use, extended thinking | Intermediate |
 | [Claude Code](/ai/claude-code-features) | Skills, Subagents, Hooks, MCP integration, CLAUDE.md | Intermediate |
 | [RAG Hands-On (n8n)](/ai/n8n-rag-hands-on) | Build RAG from scratch: n8n + pgVector + Ollama + webhook | Intermediate |
-| [Kafka & Event Streaming](/ai/kafka) | Docker Kafka, n8n Kafka trigger/producer, event pipelines for AI | Advanced |
 | [Home Storage App](/ai/home-storage-project) | Full capstone: Docker → pgVector → n8n vision ingestion → GUI | Advanced |
 
 ---

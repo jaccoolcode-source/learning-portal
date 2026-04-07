@@ -645,7 +645,7 @@ OPENAI_API_KEY=sk-...
 DATABASE_URL=postgres://user:pass@host/db
 ```
 
-W n8n UI: Credentials → Store → referencja przez `{{ $credentials.openAiApi.apiKey }}`
+W n8n UI: Credentials → Store → referencja przez <code v-pre>{{ $credentials.openAiApi.apiKey }}</code>
 
 ### Walidacja Webhooków
 

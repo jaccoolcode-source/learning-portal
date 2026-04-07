@@ -145,7 +145,7 @@ Create a new workflow in n8n called **"Item Ingestion"**.
 
 ### Node 2: Write Binary File (save image)
 - Type: **Write Binary File**
-- File Name: `/home/node/.n8n/uploads/{{ $json.body.name }}-{{ Date.now() }}.jpg`
+- File Name: <code v-pre>`/home/node/.n8n/uploads/{{ $json.body.name }}-{{ Date.now() }}.jpg`</code>
 - Input Binary Field: `photo`
 
 This saves the uploaded photo to n8n's data volume.
@@ -192,7 +192,7 @@ return [{
 ### Node 5: Ollama Embeddings
 - Model: `nomic-embed-text`
 - Embed the description from Node 4:
-  `{{ $('HTTP Request').first().json.message.content }}`
+  <code v-pre>{{ $('HTTP Request').first().json.message.content }}</code>
 
 ### Node 6: Postgres INSERT
 ```sql
@@ -233,7 +233,7 @@ Create a new workflow called **"Item Query"**.
 - Response Mode: Last Node
 
 ### Node 2: Ollama Embeddings
-- Embed: `{{ $json.body.query }}`
+- Embed: <code v-pre>{{ $json.body.query }}</code>
 - Model: `nomic-embed-text`
 
 ### Node 3: Postgres (semantic search with optional location filter)
@@ -287,7 +287,7 @@ Answer:`,
 ```
 
 ### Node 5: Basic LLM Chain + Ollama Chat Model
-- Root node: **Basic LLM Chain** — prompt: `{{ $json.prompt }}`
+- Root node: **Basic LLM Chain** — prompt: <code v-pre>{{ $json.prompt }}</code>
 - Sub-node: **Ollama Chat Model** (llama3.2:3b)
 
 ### Node 6: Respond to Webhook
