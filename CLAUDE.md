@@ -1,8 +1,6 @@
 # Learning Portal — Project Context
 
 ## Project Overview
-A VitePress-based learning portal focused on Java and coding topics, built from 7 source PDFs.
-Users read learning material and take quizzes on each topic.
 
 ## Tech Stack
 - **Framework:** VitePress (static site generator built on Vite + Vue 3)
@@ -17,7 +15,7 @@ Users read learning material and take quizzes on each topic.
 | `Design patterns.pdf` | All 23 GoF patterns (Creational, Structural, Behavioral) with Java examples |
 | `Java core.pdf` | equals/hashCode contracts, HashMap internals, String immutability |
 | `Java Collection summary.pdf` | Collections framework Java 21, SequencedCollection, Immutable collections |
-| `Java Memory.pdf` | JVM heap structure, GC algorithms (Serial/Parallel/CMS/G1), OOM, leaks |
+| `Java Memory.pdf` | JVM heap structure, GC algorithms (Serial/Parallel/CMS/G1), OOM, leaks |w
 | `Spring Framework.pdf` | IoC/DI, Bean lifecycle, scopes, cyclic deps, @Qualifier, testing support |
 | `it_java_summary_conspect.pdf` | Master interview guide: Java 8-12, Threads, DB/JPA/Hibernate, Microservices, DDD, REST, Architecture |
 

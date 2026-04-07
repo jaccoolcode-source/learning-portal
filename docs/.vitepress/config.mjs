@@ -19,6 +19,7 @@ import { databasesSidebar } from './sidebars/databases.js'
 import { systemDesignSidebar } from './sidebars/system-design.js'
 import { performanceSidebar } from './sidebars/performance.js'
 import { aiSidebar } from './sidebars/ai.js'
+import { observabilitySidebar } from './sidebars/observability.js'
 
 export default defineConfig({
   title: 'Java Learning Portal',
@@ -67,6 +68,7 @@ export default defineConfig({
           { text: 'Testing', link: '/testing/' },
           { text: 'System Design', link: '/system-design/' },
           { text: 'Performance', link: '/performance/' },
+          { text: 'Observability', link: '/observability/' },
         ],
       },
       {
@@ -81,6 +83,12 @@ export default defineConfig({
           { text: 'Agent Frameworks', link: '/ai/agent-frameworks' },
           { text: 'Thinking Models', link: '/ai/thinking-models' },
           { text: 'AI Workflows (n8n i inne)', link: '/ai/ai-workflows' },
+          { text: 'Local LLMs (Ollama)',       link: '/ai/local-llms-setup' },
+          { text: 'Claude API',                link: '/ai/claude-api' },
+          { text: 'Claude Code',               link: '/ai/claude-code-features' },
+          { text: 'RAG Hands-On (n8n)',        link: '/ai/n8n-rag-hands-on' },
+          { text: 'Kafka & Event Streaming',   link: '/ai/kafka' },
+          { text: 'Home Storage App',          link: '/ai/home-storage-project' },
         ],
       },
       {
@@ -92,6 +100,14 @@ export default defineConfig({
           { text: 'Spring Quiz', link: '/quizzes/spring-quiz' },
           { text: 'Java Memory Quiz', link: '/quizzes/java-memory-quiz' },
           { text: 'Mixed Review', link: '/quizzes/mixed-review' },
+          { text: 'Concurrency Quiz', link: '/quizzes/concurrency-quiz' },
+          { text: 'Architecture Quiz', link: '/quizzes/architecture-quiz' },
+          { text: 'Databases Quiz', link: '/quizzes/databases-quiz' },
+          { text: 'Security Quiz', link: '/quizzes/security-quiz' },
+          { text: 'Testing Quiz', link: '/quizzes/testing-quiz' },
+          { text: 'Docker & Kubernetes Quiz', link: '/quizzes/docker-kubernetes-quiz' },
+          { text: 'AI & LLMs Quiz', link: '/quizzes/ai-quiz' },
+          { text: 'System Design Quiz', link: '/quizzes/system-design-quiz' },
         ],
       },
     ],
@@ -117,6 +133,7 @@ export default defineConfig({
       '/system-design/': systemDesignSidebar,
       '/performance/': performanceSidebar,
       '/ai/': aiSidebar,
+      '/observability/': observabilitySidebar,
     },
 
     socialLinks: [

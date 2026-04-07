@@ -1,29 +1,58 @@
 # AI & LLMs for Developers
 
-Modern software engineers increasingly need to understand and work with AI systems. This section covers the fundamentals of large language models, practical prompt engineering, retrieval-augmented generation, AI agents, and the Model Context Protocol — with hands-on Spring AI Java examples throughout.
+This section covers the fundamentals of large language models, practical prompt engineering, retrieval-augmented generation (RAG), AI agents, and the Model Context Protocol — plus hands-on tutorials using **Claude Code**, **Ollama** (free local LLMs), **n8n**, and **pgVector**. Everything runs on your laptop via Docker Desktop — no cloud account required for the core exercises.
 
 ## Why Developers Need This
 
 - **LLMs are infrastructure** — like databases or message queues, they're becoming a standard component in production systems.
-- **Spring AI** brings first-class LLM integration to the Java/Spring ecosystem.
 - **RAG** solves the knowledge cutoff problem and grounds responses in your own data.
 - **Agents** automate multi-step workflows by letting models call tools and iterate.
 - **MCP** is an open standard for connecting AI models to external tools and data sources.
+- **Claude Code** is an agentic CLI that reads your codebase, runs commands, and spawns subagents — understanding its hooks, skills, and MCP integrations makes you dramatically more productive.
+- **Local LLMs via Ollama** let you develop AI features with zero API cost and full privacy — essential for iterating quickly without burning through credits.
 
 ---
 
 ## Section Map
 
-| Page | What You'll Learn |
-|------|-------------------|
-| [LLM Fundamentals](/ai/llm-fundamentals) | Transformers, tokens, context windows, embeddings, model families, API structure |
-| [Prompt Engineering](/ai/prompt-engineering) | Roles, zero/few-shot, CoT, JSON mode, Spring AI `PromptTemplate`, injection hardening |
-| [RAG & Vector Search](/ai/rag) | RAG pipeline, chunking, pgvector, Spring AI `PgVectorStore`, hybrid search, evaluation |
-| [AI Agents](/ai/agents) | ReAct loop, tool calling, Spring AI `@Tool`, memory types, multi-agent patterns |
-| [MCP Protocol](/ai/mcp) | M×N problem, host/client/server, Tools/Resources/Prompts, stdio/SSE, Spring AI MCP server |
-| [Agent Frameworks](/ai/agent-frameworks) | OpenAI Agents SDK, Agno, LangChain+LangGraph — porównanie, drzewo decyzyjne |
-| [Thinking Models](/ai/thinking-models) | Claude, o1–o4-mini, Gemini 2.5, DeepSeek-R1, Grok — modele z trybem reasoning |
-| [AI Workflows](/ai/ai-workflows) | n8n, Flowise, Dify, LangFlow, Make, Zapier — wizualna automatyzacja z AI |
+| Page | What You'll Learn | Level |
+|------|-------------------|-------|
+| [LLM Fundamentals](/ai/llm-fundamentals) | Transformers, tokens, context windows, embeddings, model families | Beginner |
+| [Prompt Engineering](/ai/prompt-engineering) | Roles, zero/few-shot, CoT, JSON mode, injection hardening | Beginner |
+| [RAG & Vector Search](/ai/rag) | RAG pipeline, chunking, pgvector, hybrid search, evaluation | Intermediate |
+| [AI Agents](/ai/agents) | ReAct loop, tool calling, memory types, multi-agent patterns | Intermediate |
+| [MCP Protocol](/ai/mcp) | M×N problem, host/client/server, Tools/Resources/Prompts, stdio/SSE | Intermediate |
+| [Agent Frameworks](/ai/agent-frameworks) | OpenAI Agents SDK, Agno, LangChain+LangGraph — comparison, decision tree | Intermediate |
+| [Thinking Models](/ai/thinking-models) | Claude, o1–o4-mini, Gemini 2.5, DeepSeek-R1 — extended reasoning mode | Intermediate |
+| [AI Workflows (n8n)](/ai/ai-workflows) | n8n, Flowise, Dify, LangFlow — visual AI automation | Beginner |
+| [Local LLMs (Ollama)](/ai/local-llms-setup) | Docker setup, model management, REST API, GPU acceleration | Beginner |
+| [Claude API](/ai/claude-api) | Messages API, streaming, vision, tool use, extended thinking | Intermediate |
+| [Claude Code](/ai/claude-code-features) | Skills, Subagents, Hooks, MCP integration, CLAUDE.md | Intermediate |
+| [RAG Hands-On (n8n)](/ai/n8n-rag-hands-on) | Build RAG from scratch: n8n + pgVector + Ollama + webhook | Intermediate |
+| [Kafka & Event Streaming](/ai/kafka) | Docker Kafka, n8n Kafka trigger/producer, event pipelines for AI | Advanced |
+| [Home Storage App](/ai/home-storage-project) | Full capstone: Docker → pgVector → n8n vision ingestion → GUI | Advanced |
+
+---
+
+## Learning Tracks
+
+::: info Track 1 — AI Theory Foundation
+Build your mental model of how AI systems work.
+
+**LLM Fundamentals** → **Prompt Engineering** → **RAG & Vector Search** → **AI Agents** → **MCP Protocol** → **Agent Frameworks** → **Thinking Models** → **AI Workflows**
+:::
+
+::: info Track 2 — Practical Tools & Claude (start here or in parallel with Track 1)
+Build and integrate AI locally — no cloud required for the core exercises.
+
+**Local LLMs (Ollama)** → **Claude API** → **Claude Code** → **RAG Hands-On (n8n)** → **Kafka & Event Streaming**
+:::
+
+::: tip Track 3 — Capstone Project (requires Track 2)
+Apply everything in one real application — a home inventory system with vision AI.
+
+**Home Storage App** — Docker stack → pgVector schema → n8n vision ingestion → semantic search → HTML GUI
+:::
 
 ---
 
@@ -40,42 +69,31 @@ Modern software engineers increasingly need to understand and work with AI syste
 | **Agent** | LLM in a loop: perceives context, decides actions, executes tools, observes results |
 | **Tool calling** | Structured mechanism for LLMs to invoke external functions |
 | **MCP** | Model Context Protocol — open standard for AI↔tool integration |
-| **Spring AI** | Spring module providing abstractions for LLM providers, embeddings, vector stores |
-| **AI Workflow** | Wizualny graf zadań łączący triggery, LLM, API i bazy danych — bez pisania kodu |
-| **n8n** | Open-source platforma automatyzacji z wbudowanymi węzłami AI (self-hostowalna) |
+| **AI Workflow** | Visual graph of tasks connecting triggers, LLMs, APIs, and databases — without code |
+| **n8n** | Open-source automation platform with built-in AI nodes (self-hostable) |
+| **Ollama** | Local LLM runtime exposing an OpenAI-compatible REST API; runs models on CPU or GPU |
+| **GGUF** | Binary format for quantized LLM weights; used by Ollama and llama.cpp |
+| **Claude Code** | Anthropic's agentic terminal CLI; reads/edits files, runs commands, spawns subagents |
+| **Skill** | Custom slash command in Claude Code defined as a Markdown file in `.claude/commands/` |
+| **Hook** | Shell command triggered by Claude Code events (PreToolUse, PostToolUse, Stop) |
+| **Subagent** | Claude instance spawned by an orchestrator to handle an isolated subtask in parallel |
+| **pgVector** | PostgreSQL extension adding a `vector` data type and ANN index operators (`<=>`) |
+| **llava** | Multimodal LLM capable of processing both text and images; used for vision tasks |
 | **Prompt injection** | Attack where untrusted input overrides intended instructions |
 | **Temperature** | Sampling randomness parameter (0 = deterministic, 2 = very random) |
 | **Hallucination** | Model generates plausible-sounding but factually incorrect content |
 
 ---
 
-## Learning Path
-
-```
-LLM Fundamentals  →  Prompt Engineering  →  RAG & Vector Search
-                                                      ↓
-                                              AI Agents  →  MCP Protocol
-                                                      ↓
-                                          AI Workflows (n8n / Dify / Flowise)
-```
-
-For Spring AI projects, you'll typically use all five areas together:
-1. Understand **fundamentals** to reason about model behaviour and costs
-2. Write effective **prompts** using templates
-3. Build **RAG pipelines** to ground responses in domain knowledge
-4. Extend with **agents** and tools for multi-step automation
-5. Expose capabilities via **MCP** for IDE/host integration
-
----
-
 ## Prerequisites
 
-- Java 17+ and Spring Boot 3.x familiarity
-- Docker (for pgvector examples)
-- An API key for at least one LLM provider (OpenAI, Anthropic, or local Ollama)
+- **Docker Desktop** installed and running (Windows, macOS, or Linux)
+- **8 GB RAM** free (16 GB recommended if running the `llava:7b` vision model)
+- An API key for at least one LLM provider (Anthropic, OpenAI) — optional; Ollama is free and local
+- Claude Code CLI — optional; needed for the Claude Code track (`npm install -g @anthropic-ai/claude-code`)
 
-::: tip Spring AI Version
-Examples use **Spring AI 1.0.x** (GA). Add the BOM to your `pom.xml`:
+::: details Java / Spring AI track
+Some pages include Spring AI Java examples. For those you also need Java 17+ and Spring Boot 3.x. Add the Spring AI BOM to your `pom.xml`:
 ```xml
 <dependencyManagement>
   <dependencies>
