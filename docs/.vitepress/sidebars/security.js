@@ -8,6 +8,7 @@ export const securitySidebar = [
       { text: 'TLS / SSL / HTTPS', link: '/security/tls-ssl' },
       { text: 'Auth Protocols (JWT, OAuth2, OIDC)', link: '/security/auth-protocols' },
       { text: 'Secure Coding', link: '/security/secure-coding' },
+      { text: 'MS Entra (Azure AD)', link: '/security/ms-entra' },
     ],
   },
 ]

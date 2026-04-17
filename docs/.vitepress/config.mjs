@@ -20,6 +20,10 @@ import { systemDesignSidebar } from './sidebars/system-design.js'
 import { performanceSidebar } from './sidebars/performance.js'
 import { aiSidebar } from './sidebars/ai.js'
 import { observabilitySidebar } from './sidebars/observability.js'
+import { awsSidebar } from './sidebars/aws.js'
+import { iacSidebar } from './sidebars/iac.js'
+import { javaSidebar } from './sidebars/java.js'
+import { javascriptSidebar } from './sidebars/javascript.js'
 
 export default defineConfig({
   title: 'Java Learning Portal',
@@ -45,6 +49,7 @@ export default defineConfig({
           { text: 'Collections', link: '/collections/' },
           { text: 'JVM & Memory', link: '/java-memory/' },
           { text: 'Concurrency', link: '/concurrency/' },
+          { text: 'Maven', link: '/java/maven' },
         ],
       },
       {
@@ -70,6 +75,9 @@ export default defineConfig({
           { text: 'System Design', link: '/system-design/' },
           { text: 'Performance', link: '/performance/' },
           { text: 'Observability', link: '/observability/' },
+          { text: 'AWS', link: '/aws/' },
+          { text: 'IaC (Terraform / CloudFormation)', link: '/iac/' },
+          { text: 'TypeScript', link: '/javascript/typescript' },
         ],
       },
       {
@@ -135,6 +143,10 @@ export default defineConfig({
       '/performance/': performanceSidebar,
       '/ai/': aiSidebar,
       '/observability/': observabilitySidebar,
+      '/aws/': awsSidebar,
+      '/iac/': iacSidebar,
+      '/java/': javaSidebar,
+      '/javascript/': javascriptSidebar,
     },
 
     socialLinks: [
