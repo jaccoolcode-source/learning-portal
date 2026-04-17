@@ -42,7 +42,6 @@ export default defineConfig({
     siteTitle: 'Java Learning Portal',
 
     nav: [
-      { text: 'Home', link: '/' },
       { text: 'Learning Paths', link: '/learning-paths' },
       {
         text: 'Java',
