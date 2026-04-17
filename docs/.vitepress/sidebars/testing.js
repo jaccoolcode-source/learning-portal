@@ -8,6 +8,7 @@ export const testingSidebar = [
       { text: 'Spring Testing', link: '/testing/spring-testing' },
       { text: 'Testcontainers', link: '/testing/testcontainers' },
       { text: 'WireMock & Contracts', link: '/testing/wiremock-contracts' },
+      { text: 'TDD', link: '/testing/tdd' },
     ],
   },
 ]
