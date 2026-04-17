@@ -25,6 +25,7 @@ import { iacSidebar } from './sidebars/iac.js'
 import { javaSidebar } from './sidebars/java.js'
 import { javascriptSidebar } from './sidebars/javascript.js'
 import { networkingSidebar } from './sidebars/networking.js'
+import { kotlinSidebar } from './sidebars/kotlin.js'
 
 export default defineConfig({
   title: 'Java Learning Portal',
@@ -51,6 +52,7 @@ export default defineConfig({
           { text: 'JVM & Memory', link: '/java-memory/' },
           { text: 'Concurrency', link: '/concurrency/' },
           { text: 'Maven', link: '/java/maven' },
+          { text: 'Kotlin', link: '/kotlin/' },
         ],
       },
       {
@@ -119,6 +121,8 @@ export default defineConfig({
           { text: 'Docker & Kubernetes Quiz', link: '/quizzes/docker-kubernetes-quiz' },
           { text: 'AI & LLMs Quiz', link: '/quizzes/ai-quiz' },
           { text: 'System Design Quiz', link: '/quizzes/system-design-quiz' },
+          { text: 'Java Core Quiz', link: '/quizzes/java-core-quiz' },
+          { text: 'Modern Java Quiz', link: '/quizzes/modern-java-quiz' },
         ],
       },
     ],
@@ -150,6 +154,7 @@ export default defineConfig({
       '/java/': javaSidebar,
       '/javascript/': javascriptSidebar,
       '/networking/': networkingSidebar,
+      '/kotlin/': kotlinSidebar,
     },
 
     socialLinks: [
