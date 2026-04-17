@@ -24,6 +24,7 @@ import { awsSidebar } from './sidebars/aws.js'
 import { iacSidebar } from './sidebars/iac.js'
 import { javaSidebar } from './sidebars/java.js'
 import { javascriptSidebar } from './sidebars/javascript.js'
+import { networkingSidebar } from './sidebars/networking.js'
 
 export default defineConfig({
   title: 'Java Learning Portal',
@@ -78,6 +79,7 @@ export default defineConfig({
           { text: 'AWS', link: '/aws/' },
           { text: 'IaC (Terraform / CloudFormation)', link: '/iac/' },
           { text: 'TypeScript', link: '/javascript/typescript' },
+          { text: 'Networking', link: '/networking/' },
         ],
       },
       {
@@ -147,6 +149,7 @@ export default defineConfig({
       '/iac/': iacSidebar,
       '/java/': javaSidebar,
       '/javascript/': javascriptSidebar,
+      '/networking/': networkingSidebar,
     },
 
     socialLinks: [
