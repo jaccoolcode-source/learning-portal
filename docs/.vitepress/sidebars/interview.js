@@ -25,4 +25,20 @@ export const interviewSidebar = [
       { text: 'Spring Core Q26–Q32', link: '/interview/spring-boot/spring-core' },
     ],
   },
+  {
+    text: 'Hibernate / JPA (Q33–Q37)',
+    collapsed: false,
+    items: [
+      { text: 'Overview', link: '/interview/hibernate-jpa/' },
+      { text: 'Hibernate Core Q33–Q37', link: '/interview/hibernate-jpa/hibernate-core' },
+    ],
+  },
+  {
+    text: 'Databases (Q38–Q40)',
+    collapsed: false,
+    items: [
+      { text: 'Overview', link: '/interview/databases/' },
+      { text: 'Databases Q38–Q40', link: '/interview/databases/db-core' },
+    ],
+  },
 ]

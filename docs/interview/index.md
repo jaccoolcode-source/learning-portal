@@ -18,9 +18,9 @@ Each question follows the same format:
 | Section | Questions | Topics |
 |---------|-----------|--------|
 | [Core Java](./java-core/) | Q1–Q25 | Data structures, exceptions, concurrency, JVM, modern Java |
-| Spring Boot & Spring Core | Q26–Q32 | IoC, AOP, @Transactional, profiles, security |
-| Hibernate / JPA | Q33–Q37 | Entity lifecycle, N+1, lazy loading, caching, locking |
-| Databases | Q38–Q40 | Indexing, isolation levels, SQL vs NoSQL |
+| [Spring Boot & Spring Core](./spring-boot/) | Q26–Q32 | IoC, AOP, @Transactional, profiles, security |
+| [Hibernate / JPA](./hibernate-jpa/) | Q33–Q37 | Entity lifecycle, N+1, lazy loading, caching, locking |
+| [Databases](./databases/) | Q38–Q40 | Indexing, isolation levels, SQL vs NoSQL |
 | REST API Design | Q41–Q43 | Best practices, idempotency, pagination |
 | Microservices | Q44–Q48 | Patterns, circuit breaker, saga, CQRS |
 | Kafka | Q50–Q52 | Fundamentals, delivery guarantees, SQS vs SNS |
