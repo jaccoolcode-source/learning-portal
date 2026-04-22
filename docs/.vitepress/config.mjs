@@ -27,6 +27,7 @@ import { javascriptSidebar } from './sidebars/javascript.js'
 import { networkingSidebar } from './sidebars/networking.js'
 import { kotlinSidebar } from './sidebars/kotlin.js'
 import { tasksSidebar } from './sidebars/tasks.js'
+import { interviewSidebar } from './sidebars/interview.js'
 
 export default defineConfig({
   title: 'Java Learning Portal',
@@ -104,6 +105,7 @@ export default defineConfig({
           { text: 'Home Storage App',          link: '/ai/home-storage-project' },
         ],
       },
+      { text: 'Interview', link: '/interview/' },
       { text: 'Tasks', link: '/tasks/' },
       {
         text: 'Quizzes',
@@ -157,6 +159,7 @@ export default defineConfig({
       '/networking/': networkingSidebar,
       '/kotlin/': kotlinSidebar,
       '/tasks/': tasksSidebar,
+      '/interview/': interviewSidebar,
     },
 
     socialLinks: [
