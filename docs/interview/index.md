@@ -23,8 +23,8 @@ Each question follows the same format:
 | [Databases](./databases/) | Q38–Q40 | Indexing, isolation levels, SQL vs NoSQL |
 | [REST API Design](./rest-api/) | Q41–Q43 | Best practices, idempotency, pagination |
 | [Microservices](./microservices/) | Q44–Q48 | Patterns, circuit breaker, saga, CQRS |
-| Kafka | Q50–Q52 | Fundamentals, delivery guarantees, SQS vs SNS |
-| AWS | Q53–Q56 | Lambda, ECS/EKS, DynamoDB, services overview |
+| [Kafka](./kafka/) | Q50–Q52 | Fundamentals, delivery guarantees, SQS vs SNS |
+| [AWS](./aws/) | Q53–Q56 | Lambda, ECS/EKS, DynamoDB, services overview |
 | Terraform / CI/CD / Maven | Q57–Q59 | IaC, GitLab CI, build tools |
 | TypeScript / Security | Q60–Q61 | TS for Java devs, MS Entra & OAuth2 |
 | System Design | Q62–Q63 | Approach, e-commerce order system |

@@ -57,4 +57,20 @@ export const interviewSidebar = [
       { text: 'Microservices Core Q44–Q48', link: '/interview/microservices/microservices-core' },
     ],
   },
+  {
+    text: 'Kafka (Q50–Q52)',
+    collapsed: false,
+    items: [
+      { text: 'Overview', link: '/interview/kafka/' },
+      { text: 'Kafka Core Q50–Q52', link: '/interview/kafka/kafka-core' },
+    ],
+  },
+  {
+    text: 'AWS (Q53–Q56)',
+    collapsed: false,
+    items: [
+      { text: 'Overview', link: '/interview/aws/' },
+      { text: 'AWS Core Q53–Q56', link: '/interview/aws/aws-core' },
+    ],
+  },
 ]
