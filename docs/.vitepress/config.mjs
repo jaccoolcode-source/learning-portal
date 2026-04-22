@@ -34,8 +34,9 @@ export default defineConfig({
   description: 'A comprehensive guide to Java, Spring, Design Patterns, and Software Architecture',
   ignoreDeadLinks: [/localhost/],
   head: [
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }],
     ['link', { rel: 'icon', href: '/favicon.ico' }],
-    ['meta', { name: 'theme-color', content: '#3b82f6' }],
+    ['meta', { name: 'theme-color', content: '#1e3a8a' }],
   ],
 
   themeConfig: {
