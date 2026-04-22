@@ -17,4 +17,12 @@ export const interviewSidebar = [
       { text: 'Modern Java (8–21)', link: '/interview/java-core/modern-java' },
     ],
   },
+  {
+    text: 'Spring Boot & Spring Core (Q26–Q32)',
+    collapsed: false,
+    items: [
+      { text: 'Overview', link: '/interview/spring-boot/' },
+      { text: 'Spring Core Q26–Q32', link: '/interview/spring-boot/spring-core' },
+    ],
+  },
 ]
