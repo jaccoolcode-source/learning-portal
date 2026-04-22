@@ -41,4 +41,20 @@ export const interviewSidebar = [
       { text: 'Databases Q38–Q40', link: '/interview/databases/db-core' },
     ],
   },
+  {
+    text: 'REST API Design (Q41–Q43)',
+    collapsed: false,
+    items: [
+      { text: 'Overview', link: '/interview/rest-api/' },
+      { text: 'REST Core Q41–Q43', link: '/interview/rest-api/rest-core' },
+    ],
+  },
+  {
+    text: 'Microservices (Q44–Q48)',
+    collapsed: false,
+    items: [
+      { text: 'Overview', link: '/interview/microservices/' },
+      { text: 'Microservices Core Q44–Q48', link: '/interview/microservices/microservices-core' },
+    ],
+  },
 ]
