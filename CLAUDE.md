@@ -18,6 +18,7 @@
 | `Java Memory.pdf` | JVM heap structure, GC algorithms (Serial/Parallel/CMS/G1), OOM, leaks |w
 | `Spring Framework.pdf` | IoC/DI, Bean lifecycle, scopes, cyclic deps, @Qualifier, testing support |
 | `it_java_summary_conspect.pdf` | Master interview guide: Java 8-12, Threads, DB/JPA/Hibernate, Microservices, DDD, REST, Architecture |
+| `Java_Backend_Developer_Complete_Interview_Guide.pdf` | 63 senior-level Q&As: Core Java, Concurrency, Spring Boot, Hibernate/JPA, REST, Microservices, Kafka, AWS, Terraform, CI/CD, Maven, TypeScript, MS Entra/OAuth2, System Design |
 
 ## Portal Structure (docs/)
 ```

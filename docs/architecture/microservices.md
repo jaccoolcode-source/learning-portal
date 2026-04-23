@@ -282,6 +282,163 @@ If step 3 fails:
   → OrderService compensates (cancels order)
 ```
 
+There are two ways to implement sagas: **Choreography** and **Orchestration**.
+
+---
+
+## Choreography vs Orchestration
+
+### Choreography — Event-Driven, No Central Coordinator
+
+Each service reacts to events published by other services. No service knows the full workflow.
+
+```java
+// OrderService — publishes event, doesn't know what happens next
+@Service
+public class OrderService {
+
+    @Transactional
+    public Order placeOrder(OrderRequest req) {
+        Order order = orderRepo.save(Order.pending(req));
+        eventPublisher.publish(new OrderPlacedEvent(order.getId(), req.getProductId(), req.getAmount()));
+        return order;
+    }
+
+    // Listens for final outcomes
+    @KafkaListener(topics = "payment-failed")
+    public void onPaymentFailed(PaymentFailedEvent event) {
+        orderRepo.findById(event.getOrderId())
+            .ifPresent(order -> { order.cancel(); orderRepo.save(order); });
+    }
+}
+
+// PaymentService — reacts to OrderPlaced, publishes its outcome
+@Component
+public class PaymentEventHandler {
+
+    @KafkaListener(topics = "order-placed")
+    public void onOrderPlaced(OrderPlacedEvent event) {
+        try {
+            paymentService.charge(event.getOrderId(), event.getAmount());
+            eventPublisher.publish(new PaymentSucceededEvent(event.getOrderId()));
+        } catch (PaymentException e) {
+            eventPublisher.publish(new PaymentFailedEvent(event.getOrderId(), e.getMessage()));
+        }
+    }
+}
+
+// InventoryService — reacts to PaymentSucceeded
+@Component
+public class InventoryEventHandler {
+
+    @KafkaListener(topics = "payment-succeeded")
+    public void onPaymentSucceeded(PaymentSucceededEvent event) {
+        inventoryService.reserve(event.getOrderId(), event.getProductId());
+        eventPublisher.publish(new StockReservedEvent(event.getOrderId()));
+    }
+}
+```
+
+**Choreography pros:** Fully decoupled — no service knows about others; easy to add new participants.
+
+**Choreography cons:** Hard to visualise the full workflow; difficult to debug cascading failures; no single place to see overall saga state.
+
+### Orchestration — Central Coordinator
+
+One service (the Saga Orchestrator) knows the full workflow and tells each participant what to do.
+
+```java
+// Saga Orchestrator — owns the entire workflow
+@Service
+public class OrderSagaOrchestrator {
+
+    @Transactional
+    public void startSaga(Long orderId) {
+        SagaState saga = sagaRepo.save(SagaState.start(orderId));
+        commandBus.send(new ChargePaymentCommand(orderId, saga.getId()));
+    }
+
+    @EventHandler
+    public void onPaymentCharged(PaymentChargedEvent event) {
+        SagaState saga = sagaRepo.findBySagaId(event.getSagaId());
+        saga.step("PAYMENT_DONE");
+        commandBus.send(new ReserveStockCommand(event.getOrderId(), saga.getId()));
+        sagaRepo.save(saga);
+    }
+
+    @EventHandler
+    public void onStockReserved(StockReservedEvent event) {
+        SagaState saga = sagaRepo.findBySagaId(event.getSagaId());
+        saga.complete();
+        commandBus.send(new ConfirmOrderCommand(event.getOrderId()));
+        sagaRepo.save(saga);
+    }
+
+    @EventHandler
+    public void onPaymentFailed(PaymentFailedEvent event) {
+        SagaState saga = sagaRepo.findBySagaId(event.getSagaId());
+        saga.fail("PAYMENT_FAILED");
+        commandBus.send(new CancelOrderCommand(event.getOrderId()));
+        sagaRepo.save(saga);
+    }
+}
+```
+
+**Orchestration pros:** Full workflow visibility in one place; easier to debug, monitor, and add compensating actions.
+
+**Orchestration cons:** Orchestrator becomes a coupling point; if it fails, the saga stalls.
+
+### Comparison
+
+| | Choreography | Orchestration |
+|--|--|--|
+| Coupling | Low — services only know about events | Medium — services know the orchestrator |
+| Visibility | Hard — flow is implicit | Clear — flow is explicit in one place |
+| Debugging | Difficult — trace through event chain | Easier — one place to check state |
+| Scalability | High — no bottleneck | Potential bottleneck at orchestrator |
+| Best for | Simple flows (2–3 services) | Complex flows (3+ steps, compensation logic) |
+
+::: tip Golden Rule
+Use choreography for simple 2-service event flows. Use orchestration (or AWS Step Functions / Axon) for anything with 3+ steps, compensation logic, or where workflow visibility matters in production.
+:::
+
+---
+
+## Idempotency in Microservices
+
+At-least-once delivery (Kafka, SQS) means your consumer may receive the same message multiple times. Every consumer must be idempotent.
+
+```java
+// Pattern: idempotency table — track processed message IDs
+@Component
+public class PaymentEventHandler {
+
+    @KafkaListener(topics = "order-placed")
+    @Transactional
+    public void onOrderPlaced(OrderPlacedEvent event) {
+        // Check if already processed
+        if (processedEventRepo.existsById(event.getEventId())) {
+            log.info("Duplicate event {}, skipping", event.getEventId());
+            return;
+        }
+
+        paymentService.charge(event.getOrderId(), event.getAmount());
+
+        // Mark as processed in same transaction
+        processedEventRepo.save(new ProcessedEvent(event.getEventId(), Instant.now()));
+    }
+}
+```
+
+**Idempotency at multiple levels:**
+
+| Level | Technique |
+|-------|-----------|
+| API (POST) | Idempotency-Key header stored in Redis (24h TTL) |
+| Message consumer | Processed event ID table, check before acting |
+| Database | `INSERT ... ON CONFLICT DO NOTHING`, conditional writes |
+| DynamoDB | `PutItem` with `attribute_not_exists(PK)` condition |
+
 ---
 
 ## Key Interview Points
@@ -291,8 +448,23 @@ If step 3 fails:
 | How do services communicate? | Sync (REST/gRPC) or async (Kafka/RabbitMQ) |
 | How to handle a failing downstream? | Circuit breaker, retry, fallback, bulkhead |
 | How to avoid distributed transactions? | Saga pattern with compensating transactions |
+| Choreography vs Orchestration? | Choreography = event-driven, decoupled; Orchestration = central coordinator, better visibility |
+| How to handle at-least-once delivery? | Idempotency keys / processed-event table checked in same transaction |
 | How to trace a request across services? | Distributed tracing (Zipkin, Jaeger) with trace IDs |
 | When NOT to use microservices? | Small teams, unclear domain, early-stage products |
+
+---
+
+## Interview Quick-Fire
+
+**Q: What is the difference between choreography and orchestration in the Saga pattern?**
+In choreography, each service reacts to events from other services — there's no central coordinator; services are fully decoupled but the overall flow is implicit and hard to visualise. In orchestration, a central orchestrator (a dedicated service or a workflow engine like AWS Step Functions) explicitly tells each participant what to do — the entire flow is visible in one place, compensation logic is centralised, and debugging is easier. Use choreography for simple 2-service flows; orchestration for anything with 3+ steps or complex compensation.
+
+**Q: How do you ensure idempotency in a microservice that consumes Kafka messages?**
+Use a processed-event deduplication table. Before processing a message, check if its unique event ID is already in the table. If yes, skip it. If no, process the event and insert the event ID — both in the same transaction. This guarantees exactly-once processing even with at-least-once delivery. For stateless operations (like `PUT /resource`), the operation itself may already be naturally idempotent.
+
+**Q: Why is 2PC (Two-Phase Commit) avoided in microservices?**
+2PC requires a distributed coordinator that locks resources across all participants until the commit phase completes. If the coordinator crashes mid-commit, all participants are blocked indefinitely. It's a single point of failure, creates tight coupling between services, and performs poorly under load. The Saga pattern replaces 2PC with local transactions + compensating actions — no cross-service locks, eventual consistency instead of strong consistency.
 
 ---
 

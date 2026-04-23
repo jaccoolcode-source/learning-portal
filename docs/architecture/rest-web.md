@@ -238,24 +238,107 @@ URL versioning is the pragmatic choice for most teams. It's explicit, cacheable,
 
 ## Pagination
 
+### 1. Offset-Based Pagination
+
+Simple and supports random access to any page. Uses SQL `OFFSET`.
+
+```
+GET /api/orders?page=0&size=20&sort=createdAt,desc
+```
+
 ```java
-// Offset-based (simple, use for bounded datasets)
-GET /orders?page=2&size=20
+// Spring Data — automatic with Pageable
+@GetMapping
+public Page<OrderDto> list(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "20") int size) {
+    return orderRepo.findAll(PageRequest.of(page, size, Sort.by("createdAt").descending()))
+                    .map(orderMapper::toDto);
+}
 
-// Cursor-based (efficient for large/dynamic datasets)
-GET /orders?cursor=eyJpZCI6MTAwfQ&size=20
-
-// Response with pagination metadata
+// Response shape
 {
-  "data": [...],
-  "page": { "number": 2, "size": 20, "total": 150, "totalPages": 8 },
-  "_links": {
-    "self":  "/orders?page=2&size=20",
-    "next":  "/orders?page=3&size=20",
-    "prev":  "/orders?page=1&size=20"
-  }
+  "content": [...20 orders...],
+  "page": { "number": 0, "size": 20, "totalElements": 1543, "totalPages": 78 }
 }
 ```
+
+**Pros:** Simple; supports jumping to any page number; works with any database.
+
+**Cons:** `OFFSET 1000 LIMIT 20` scans and discards 1000 rows — performance degrades on later pages. Results shift if rows are inserted/deleted between requests (page 3 may repeat items from page 2).
+
+### 2. Cursor-Based Pagination (Keyset)
+
+Uses the last seen record's sort key as a bookmark. No OFFSET — always uses an index.
+
+```
+GET /api/orders?cursor=eyJpZCI6MTIwfQ==&size=20
+```
+
+```java
+@GetMapping
+public CursorPage<OrderDto> list(
+        @RequestParam(required = false) String cursor,
+        @RequestParam(defaultValue = "20") int size) {
+
+    Long lastId = decodeCursor(cursor); // null on first page
+
+    List<Order> orders = lastId == null
+        ? orderRepo.findTop20ByOrderByIdDesc()
+        : orderRepo.findByIdLessThanOrderByIdDesc(lastId, PageRequest.of(0, size));
+
+    String nextCursor = orders.size() == size
+        ? encodeCursor(orders.get(orders.size() - 1).getId())
+        : null;
+
+    return new CursorPage<>(orders.stream().map(orderMapper::toDto).toList(), nextCursor);
+}
+
+private String encodeCursor(Long id) {
+    return Base64.getEncoder().encodeToString(("{\"id\":" + id + "}").getBytes());
+}
+
+private Long decodeCursor(String cursor) {
+    if (cursor == null) return null;
+    String json = new String(Base64.getDecoder().decode(cursor));
+    return Long.parseLong(json.replaceAll("[^0-9]", ""));
+}
+
+// Response
+{
+  "content": [...20 orders...],
+  "nextCursor": "eyJpZCI6MTAwfQ==",
+  "hasNext": true
+}
+```
+
+**Pros:** Consistent performance regardless of page depth; stable results even with concurrent inserts.
+
+**Cons:** Cannot jump to arbitrary page numbers; only "next page" navigation; requires a sortable, indexed key.
+
+### Spring Data `Slice<T>` — No COUNT query
+
+When you don't need total count (infinite scroll, "load more" UIs), use `Slice<T>` instead of `Page<T>`.
+
+```java
+// Page<T> fires 2 queries: SELECT data + SELECT COUNT(*)
+Page<Order> page = orderRepo.findByStatus(PENDING, pageable);
+
+// Slice<T> fires 1 query: SELECT data (fetches size+1 to detect hasNext)
+Slice<Order> slice = orderRepo.findByStatus(PENDING, pageable);
+slice.hasNext();     // true if more pages exist
+slice.getContent();  // current page data
+```
+
+### When to Use Which
+
+| Scenario | Recommendation |
+|----------|----------------|
+| Admin panel, back-office, "page X of Y" | Offset-based (`Page<T>`) |
+| Infinite scroll, social feed, activity log | Cursor-based |
+| Large dataset (>100k rows) | Cursor-based — OFFSET degrades beyond ~50 pages |
+| "Load more" button, mobile APIs | `Slice<T>` — skip the COUNT query overhead |
+| DynamoDB, Cassandra | Cursor only — no OFFSET support in these databases |
 
 ---
 
@@ -326,6 +409,21 @@ public ResponseEntity<OrderDto> create(@Valid @RequestBody CreateOrderRequest re
 | 401 vs 403? | 401: not authenticated; 403: authenticated but not authorized |
 | How to version a REST API? | URL prefix (`/v2/`), header, or query param; URL is most common |
 | What is HATEOAS? | Responses include links to related actions; Level 3 REST |
+| Offset vs cursor pagination? | Offset: simple, supports page jumps, degrades at scale; Cursor: fast at any depth, stable, no page jumps |
+| When to use `Slice<T>` vs `Page<T>`? | `Slice<T>` when total count isn't needed — saves the COUNT(*) query |
+
+---
+
+## Interview Quick-Fire
+
+**Q: Why does offset pagination degrade at scale?**
+`OFFSET N LIMIT 20` forces the database to scan and discard the first N rows before returning the 20 you want. At OFFSET 10000, the DB reads 10020 rows to give you 20. With no index shortcut for OFFSET, this scales linearly with page depth. Cursor-based (keyset) pagination uses `WHERE id > :lastId LIMIT 20` — an index seek that is O(log N) regardless of depth.
+
+**Q: What are the problems with offset pagination when data changes concurrently?**
+If a row is inserted or deleted between page requests, all subsequent offsets shift. A user on page 3 may see a duplicate item (from page 2) or miss an item entirely. Cursor-based pagination is stable because it anchors on the last-seen record's key, not a position count.
+
+**Q: How do you implement idempotent POST requests?**
+The client generates a unique `Idempotency-Key` UUID and sends it as a request header. The server checks a store (Redis or DB) keyed by that UUID. If the result already exists, return the cached response immediately without re-executing. If not, process the request, persist the response against the key (with a TTL), and return it. This pattern makes POST safe to retry on network failures.
 
 ---
 

@@ -71,6 +71,48 @@ ThreadPoolExecutor executor = new ThreadPoolExecutor(
 - `DiscardPolicy` — silently drop task
 - `DiscardOldestPolicy` — drop oldest queued task
 
+### Thread Pool Sizing Formula
+
+Pool sizing depends on whether tasks are CPU-bound or I/O-bound.
+
+```
+N_cpus = Runtime.getRuntime().availableProcessors()
+
+// CPU-bound (heavy computation, no blocking I/O)
+corePoolSize = N_cpus + 1
+// The +1 handles the case when one thread is briefly paused (GC, page fault)
+
+// I/O-bound (DB calls, HTTP calls, file I/O)
+corePoolSize = N_cpus * (1 + wait_time / compute_time)
+// Example: if a thread spends 90% of time waiting on DB (9ms wait, 1ms compute):
+// corePoolSize = 4 * (1 + 9/1) = 40 threads
+```
+
+```java
+// Practical example — DB-heavy service on 4-core machine
+int cpus = Runtime.getRuntime().availableProcessors(); // 4
+// Assume ~50ms DB wait, ~5ms CPU work → ratio = 10
+int poolSize = cpus * (1 + 10); // = 44
+
+ThreadPoolExecutor dbPool = new ThreadPoolExecutor(
+    poolSize, poolSize,                   // core == max for stable pools
+    0L, TimeUnit.MILLISECONDS,
+    new LinkedBlockingQueue<>(500),       // bounded — reject if overwhelmed
+    r -> {
+        Thread t = new Thread(r, "db-worker-" + counter.getAndIncrement());
+        t.setDaemon(true);
+        return t;
+    },
+    new ThreadPoolExecutor.CallerRunsPolicy()
+);
+```
+
+::: tip Pool sizing in practice
+- **Always bound the queue** (`LinkedBlockingQueue(capacity)`) — unbounded queues hide overload and cause OOM under sustained load.
+- Monitor `executor.getActiveCount()`, `executor.getQueue().size()`, and rejected tasks in production.
+- For Java 21+ I/O-bound tasks, prefer **virtual threads** (`Executors.newVirtualThreadPerTaskExecutor()`) — the JVM handles blocking efficiently without thread-per-CPU limits.
+:::
+
 ---
 
 ## CompletableFuture
