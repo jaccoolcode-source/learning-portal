@@ -73,4 +73,28 @@ export const interviewSidebar = [
       { text: 'AWS Core Q53–Q56', link: '/interview/aws/aws-core' },
     ],
   },
+  {
+    text: 'Terraform / CI/CD / Maven (Q57–Q59)',
+    collapsed: false,
+    items: [
+      { text: 'Overview', link: '/interview/devops/' },
+      { text: 'DevOps Core Q57–Q59', link: '/interview/devops/devops-core' },
+    ],
+  },
+  {
+    text: 'TypeScript & Security (Q60–Q61)',
+    collapsed: false,
+    items: [
+      { text: 'Overview', link: '/interview/security/' },
+      { text: 'Security Core Q60–Q61', link: '/interview/security/security-core' },
+    ],
+  },
+  {
+    text: 'System Design (Q62–Q63)',
+    collapsed: false,
+    items: [
+      { text: 'Overview', link: '/interview/system-design/' },
+      { text: 'System Design Q62–Q63', link: '/interview/system-design/system-design-core' },
+    ],
+  },
 ]
