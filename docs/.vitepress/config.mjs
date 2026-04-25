@@ -26,6 +26,7 @@ import { javaSidebar } from './sidebars/java.js'
 import { javascriptSidebar } from './sidebars/javascript.js'
 import { networkingSidebar } from './sidebars/networking.js'
 import { kotlinSidebar } from './sidebars/kotlin.js'
+import { reactSidebar } from './sidebars/react.js'
 import { tasksSidebar } from './sidebars/tasks.js'
 import { interviewSidebar } from './sidebars/interview.js'
 
@@ -83,6 +84,7 @@ export default defineConfig({
           { text: 'AWS', link: '/aws/' },
           { text: 'IaC (Terraform / CloudFormation)', link: '/iac/' },
           { text: 'TypeScript', link: '/javascript/typescript' },
+          { text: 'React', link: '/react/' },
           { text: 'Networking', link: '/networking/' },
         ],
       },
@@ -159,6 +161,7 @@ export default defineConfig({
       '/javascript/': javascriptSidebar,
       '/networking/': networkingSidebar,
       '/kotlin/': kotlinSidebar,
+      '/react/': reactSidebar,
       '/tasks/': tasksSidebar,
       '/interview/': interviewSidebar,
     },
